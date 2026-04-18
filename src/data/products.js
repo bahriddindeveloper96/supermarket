@@ -1,0 +1,356 @@
+export const categories = [
+  { id: 1, name: "Mevalar",          icon: "🍎", color: "#FF6B6B", bg: "#FFF0F0" },
+  { id: 2, name: "Sabzavotlar",      icon: "🥦", color: "#51CF66", bg: "#F0FFF4" },
+  { id: 3, name: "Go'sht & Baliq",   icon: "🥩", color: "#FF8C42", bg: "#FFF5EE" },
+  { id: 4, name: "Sut mahsulotlari", icon: "🥛", color: "#4DABF7", bg: "#F0F8FF" },
+  { id: 5, name: "Non & Pishiriq",   icon: "🍞", color: "#F9A825", bg: "#FFFDE7" },
+  { id: 6, name: "Ichimliklar",      icon: "🥤", color: "#9C27B0", bg: "#F9F0FF" },
+  { id: 7, name: "Muzqaymoq",        icon: "🍦", color: "#E91E63", bg: "#FFF0F5" },
+  { id: 8, name: "Ziravorlar",       icon: "🌶️", color: "#795548", bg: "#FFF8F5" },
+]
+
+export const products = [
+  // ── Mevalar
+  {
+    id: 1, name: "Olma", category: 1,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 8500, oldPrice: 10000,
+    images: [
+      "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1506459225024-1428097a7e18?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1572441713132-c542fc4fe282?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 124, badge: "Yangi", inStock: true,
+    description: "Toza, yangi, vitaminlarga boy mahalliy olma. A, C va B6 vitaminlarga boy bo'lib, immunitetni mustahkamlaydi.",
+    details: { "Turi": "Mahalliy", "Mamlakat": "O'zbekiston", "Saqlash": "8–12°C", "Yaroqlilik": "7–10 kun" },
+  },
+  {
+    id: 2, name: "Banan", category: 1,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 12000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1481349518771-20055b2a7b24?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1603833665858-e61d17a86224?w=600&h=600&fit=crop",
+    ],
+    rating: 4.6, reviews: 89, badge: null, inStock: true,
+    description: "Ekvador bananasi. Shirinligi va to'yimliligi bilan mashhur. Kaliy va magniy manbayi.",
+    details: { "Turi": "Ekvador", "Mamlakat": "Ekvador", "Saqlash": "Xona harorati", "Yaroqlilik": "5–7 kun" },
+  },
+  {
+    id: 3, name: "Uzum", category: 1,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 18000, oldPrice: 22000,
+    images: [
+      "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596363505729-4190a9506133?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&h=600&fit=crop",
+    ],
+    rating: 4.9, reviews: 201, badge: "Chegirma", inStock: true,
+    description: "Mahalliy o'zbek uzumi. Shirin, suvsiz, to'q rangli. Antioxidantlarga boy.",
+    details: { "Turi": "Qora uzum", "Mamlakat": "O'zbekiston", "Saqlash": "2–4°C", "Yaroqlilik": "5–7 kun" },
+  },
+  {
+    id: 4, name: "Limon", category: 1,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 9000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1590502593747-42a996133562?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1598030345877-29cffbd58e8b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1582476867218-8c672bf7765f?w=600&h=600&fit=crop",
+    ],
+    rating: 4.5, reviews: 67, badge: null, inStock: true,
+    description: "Yangi limon. C vitamini bilan boy, immunitetni oshiradi. Choy va taomlar uchun ideal.",
+    details: { "Turi": "Sariq limon", "Mamlakat": "Turkiya", "Saqlash": "Xona harorati", "Yaroqlilik": "10–14 kun" },
+  },
+  {
+    id: 5, name: "Shaftoli", category: 1,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 15000, oldPrice: 18000,
+    images: [
+      "https://images.unsplash.com/photo-1595743825637-cdafc8ad4173?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1517282009859-f000ec3b26fe?w=600&h=600&fit=crop",
+    ],
+    rating: 4.7, reviews: 143, badge: "Top", inStock: true,
+    description: "To'liq yetilgan shaftoli. Shirin, yumshoq, atirli. Ferghona vodiysi shaftolisi.",
+    details: { "Turi": "Mahalliy", "Mamlakat": "O'zbekiston", "Saqlash": "4–6°C", "Yaroqlilik": "3–5 kun" },
+  },
+  {
+    id: 6, name: "Tarvuz", category: 1,
+    unit: "dona", minQty: 1, step: 1,
+    price: 35000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1563114773-84221bd62daa?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1527325678964-54921661f888?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1601004890684-d8cbf643f5f2?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 312, badge: null, inStock: true,
+    description: "Qo'rg'on tarvuzi — shirinligi va hajmi bilan mashhur. O'rtacha 8–12 kg.",
+    details: { "Turi": "Qo'rg'on", "Mamlakat": "O'zbekiston", "Saqlash": "Xona harorati", "Og'irligi": "8–12 kg" },
+  },
+
+  // ── Sabzavotlar
+  {
+    id: 7, name: "Pomidor", category: 2,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 7000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1561136594-7f68813d8e24?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1546094096-0df4bcaad337?w=600&h=600&fit=crop",
+    ],
+    rating: 4.6, reviews: 98, badge: null, inStock: true,
+    description: "Yangi, qizil pomidor. Salat, sho'rva va taomlar uchun. Likopen va C vitamini manbayi.",
+    details: { "Turi": "Mahalliy", "Mamlakat": "O'zbekiston", "Saqlash": "10–15°C", "Yaroqlilik": "5–7 kun" },
+  },
+  {
+    id: 8, name: "Bodring", category: 2,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 6000, oldPrice: 8000,
+    images: [
+      "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1568584711075-3d021a7c3ca3?w=600&h=600&fit=crop",
+    ],
+    rating: 4.4, reviews: 76, badge: "Chegirma", inStock: true,
+    description: "Yosh, yangi bodring. Salat uchun ideal. Suv miqdori yuqori, kaloriyasi past.",
+    details: { "Turi": "Issiqxona", "Mamlakat": "O'zbekiston", "Saqlash": "7–10°C", "Yaroqlilik": "7–10 kun" },
+  },
+  {
+    id: 9, name: "Sabzi", category: 2,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 5000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1445282768818-728615cc910a?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1467019972079-a273e1bc9173?w=600&h=600&fit=crop",
+    ],
+    rating: 4.7, reviews: 154, badge: null, inStock: true,
+    description: "To'q sariq rangli sabzi. Osh, sho'rva va salat uchun. Beta-karotin manbayi.",
+    details: { "Turi": "Mahalliy", "Mamlakat": "O'zbekiston", "Saqlash": "0–4°C", "Yaroqlilik": "2–3 hafta" },
+  },
+  {
+    id: 10, name: "Piyoz", category: 2,
+    unit: "kg", minQty: 1, step: 1,
+    price: 4000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1518977956812-cd3dbadaaf31?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1508747703725-719777637510?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=600&h=600&fit=crop",
+    ],
+    rating: 4.3, reviews: 45, badge: null, inStock: true,
+    description: "Sariq piyoz. Har qanday taomga zarur. Antibakterial xususiyatga ega.",
+    details: { "Turi": "Sariq piyoz", "Mamlakat": "O'zbekiston", "Saqlash": "Quruq joy", "Yaroqlilik": "1–2 oy" },
+  },
+  {
+    id: 11, name: "Kartoshka", category: 2,
+    unit: "kg", minQty: 1, step: 1,
+    price: 5500, oldPrice: 7000,
+    images: [
+      "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1508313880080-c4bef0730395?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1573848573035-04ab2c5f61bf?w=600&h=600&fit=crop",
+    ],
+    rating: 4.5, reviews: 187, badge: "Chegirma", inStock: true,
+    description: "Andijon kartoshkasi. Osh, qovurma va sho'rva uchun. Kraxmal va kaliy manbayi.",
+    details: { "Turi": "Andijon", "Mamlakat": "O'zbekiston", "Saqlash": "4–6°C", "Yaroqlilik": "3–4 hafta" },
+  },
+
+  // ── Go'sht & Baliq
+  {
+    id: 13, name: "Mol go'shti", category: 3,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 85000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1588347818033-c3c0a3571799?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1551446591-142875a901a1?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 234, badge: "Premium", inStock: true,
+    description: "Yangi mol go'shti. Sho'rva, qovurma va kabob uchun. Oqsil va temir manbayi.",
+    details: { "Turi": "Suyaksiz", "Mamlakat": "O'zbekiston", "Saqlash": "0–4°C", "Yaroqlilik": "3–5 kun" },
+  },
+  {
+    id: 14, name: "Tovuq fileti", category: 3,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 45000, oldPrice: 52000,
+    images: [
+      "https://images.unsplash.com/photo-1604503468506-a8da13d11bea?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=600&h=600&fit=crop",
+    ],
+    rating: 4.7, reviews: 189, badge: "Chegirma", inStock: true,
+    description: "Toza tovuq fileti. Grillda, qovurib yoki bug'da pishirish uchun ideal.",
+    details: { "Turi": "Fillet (ko'krak)", "Mamlakat": "O'zbekiston", "Saqlash": "0–4°C", "Yaroqlilik": "2–3 kun" },
+  },
+  {
+    id: 16, name: "Losos baliq", category: 3,
+    unit: "kg", minQty: 0.5, step: 0.5,
+    price: 120000, oldPrice: 140000,
+    images: [
+      "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1544943910-4c1dc44aab44?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 98, badge: "Chegirma", inStock: true,
+    description: "Norvegiyadagi losos. Omega-3 yog' kislotalari manbayi. Grillda yoki bug'da pishirish uchun.",
+    details: { "Turi": "Atlantik losos", "Mamlakat": "Norvegiya", "Saqlash": "0–2°C", "Yaroqlilik": "2–3 kun" },
+  },
+
+  // ── Sut mahsulotlari
+  {
+    id: 17, name: "Sigir suti", category: 4,
+    unit: "dona", minQty: 1, step: 1,
+    price: 12000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=600&h=600&fit=crop",
+    ],
+    rating: 4.6, reviews: 267, badge: null, inStock: true,
+    description: "Toza sigir suti, 3.2% yog'lilik. Kaltsiy va D vitamini manbayi. 1 litrlik qadoq.",
+    details: { "Yog'lilik": "3.2%", "Hajmi": "1 L", "Saqlash": "2–6°C", "Yaroqlilik": "5 kun" },
+  },
+  {
+    id: 18, name: "Gouda pishloq", category: 4,
+    unit: "dona", minQty: 1, step: 1,
+    price: 28000, oldPrice: 32000,
+    images: [
+      "https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1613987245117-e3e82f5e9d4e?w=600&h=600&fit=crop",
+    ],
+    rating: 4.7, reviews: 143, badge: "Chegirma", inStock: true,
+    description: "Gouda pishloq, 200g. Yaxshi erib ketadigan. Sandwich va pizza uchun.",
+    details: { "Yog'lilik": "48%", "Og'irligi": "200 g", "Saqlash": "2–6°C", "Yaroqlilik": "21 kun" },
+  },
+  {
+    id: 20, name: "Sariyog'", category: 4,
+    unit: "dona", minQty: 1, step: 1,
+    price: 22000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1612257998531-fc4ae5d1c9d6?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 201, badge: "Top", inStock: true,
+    description: "Tabiiy sariyog', 200g. Non va pishiriqlar uchun. A va D vitamini manbayi.",
+    details: { "Yog'lilik": "82.5%", "Og'irligi": "200 g", "Saqlash": "0–6°C", "Yaroqlilik": "30 kun" },
+  },
+
+  // ── Non & Pishiriq
+  {
+    id: 21, name: "Oq non", category: 5,
+    unit: "dona", minQty: 1, step: 1,
+    price: 5000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=600&h=600&fit=crop",
+    ],
+    rating: 4.6, reviews: 345, badge: "Yangi", inStock: true,
+    description: "Kunlik yangi non. Tandirda pishirilgan, mo'rtakay.",
+    details: { "Og'irligi": "~500 g", "Tarkibi": "Un, suv, tuz, xamirturush", "Saqlash": "Xona harorati", "Yaroqlilik": "1–2 kun" },
+  },
+  {
+    id: 22, name: "Tort", category: 5,
+    unit: "dona", minQty: 1, step: 1,
+    price: 75000, oldPrice: 90000,
+    images: [
+      "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1551529834-525807d6b4f3?w=600&h=600&fit=crop",
+    ],
+    rating: 4.9, reviews: 178, badge: "Chegirma", inStock: true,
+    description: "Maxsus tort, 1 kg. Bayramlar uchun ideal. Qaymoq va mevalar bilan bezatilgan.",
+    details: { "Og'irligi": "1 kg", "Tarkibi": "Un, yumurtka, qaymoq, qand", "Saqlash": "2–6°C", "Yaroqlilik": "3 kun" },
+  },
+
+  // ── Ichimliklar
+  {
+    id: 24, name: "Coca-Cola", category: 6,
+    unit: "dona", minQty: 1, step: 1,
+    price: 15000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596803244535-925769f389fc?w=600&h=600&fit=crop",
+    ],
+    rating: 4.5, reviews: 456, badge: null, inStock: true,
+    description: "Coca-Cola 1.5 litr. Sovutilgan holda ichish tavsiya etiladi.",
+    details: { "Hajmi": "1.5 L", "Turi": "Gazli", "Saqlash": "Sovuq joyda", "Yaroqlilik": "6 oy" },
+  },
+  {
+    id: 26, name: "Apelsin sharbati", category: 6,
+    unit: "dona", minQty: 1, step: 1,
+    price: 18000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 167, badge: "Top", inStock: true,
+    description: "100% tabiiy apelsin sharbati, 1 litr. Konservant va bo'yoqsiz.",
+    details: { "Hajmi": "1 L", "Tarkibi": "100% apelsin", "Saqlash": "2–6°C", "Yaroqlilik": "14 kun" },
+  },
+
+  // ── Muzqaymoq
+  {
+    id: 28, name: "Vanilla muzqaymoq", category: 7,
+    unit: "dona", minQty: 1, step: 1,
+    price: 12000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1488900128323-21503983a07e?w=600&h=600&fit=crop",
+    ],
+    rating: 4.8, reviews: 312, badge: "Top", inStock: true,
+    description: "Klassik vanilla muzqaymoq. Tabiiy vanillik va krem bilan. 500ml qadoq.",
+    details: { "Hajmi": "500 ml", "Yog'lilik": "12%", "Saqlash": "–18°C", "Yaroqlilik": "6 oy" },
+  },
+  {
+    id: 29, name: "Shokolad muzqaymoq", category: 7,
+    unit: "dona", minQty: 1, step: 1,
+    price: 14000, oldPrice: 16000,
+    images: [
+      "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1615478503562-ec2d8aa0e24e?w=600&h=600&fit=crop",
+    ],
+    rating: 4.9, reviews: 198, badge: "Chegirma", inStock: true,
+    description: "Belgiya shokoladi bilan tayyorlangan muzqaymoq. Chuqur shokolad ta'mi.",
+    details: { "Hajmi": "500 ml", "Shokolad": "Belgiya kakao", "Saqlash": "–18°C", "Yaroqlilik": "6 oy" },
+  },
+
+  // ── Ziravorlar
+  {
+    id: 30, name: "Zira", category: 8,
+    unit: "dona", minQty: 1, step: 1,
+    price: 8000, oldPrice: null,
+    images: [
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1599191863539-6c5c5c7b22c0?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&h=600&fit=crop",
+    ],
+    rating: 4.6, reviews: 134, badge: null, inStock: true,
+    description: "O'zbek zirasi, 100g. Osh va go'sht taomlar uchun zarur. O'tkir atirli.",
+    details: { "Og'irligi": "100 g", "Mamlakat": "O'zbekiston", "Saqlash": "Quruq joy", "Yaroqlilik": "2 yil" },
+  },
+  {
+    id: 32, name: "Safron", category: 8,
+    unit: "dona", minQty: 1, step: 1,
+    price: 45000, oldPrice: 55000,
+    images: [
+      "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1599191863539-6c5c5c7b22c0?w=600&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600&h=600&fit=crop",
+    ],
+    rating: 4.9, reviews: 67, badge: "Premium", inStock: true,
+    description: "Iran safroni, 5g. Dunyodagi eng qimmat ziravorlardan biri. Osh va shirinliklarga rang va atrini beradi.",
+    details: { "Og'irligi": "5 g", "Mamlakat": "Eron", "Saqlash": "Quruq, qorong'i joy", "Yaroqlilik": "2 yil" },
+  },
+]
