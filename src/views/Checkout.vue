@@ -63,9 +63,103 @@
                 <label>Email</label>
                 <input v-model="f.email" type="email" placeholder="email@example.com" />
               </div>
-              <div class="field full">
-                <label>Manzil <span class="req">*</span></label>
-                <input v-model="f.address" type="text" placeholder="Ko'cha va uy raqami" :class="{ err: v && !f.address }" />
+              <!-- ── Address block ── -->
+              <div class="field full addr-block">
+                <label class="addr-label">Yetkazib berish manzili <span class="req">*</span></label>
+
+                <!-- Map / Location detector -->
+                <div class="loc-card" :class="{ 'loc-success': locSuccess }">
+                  <div class="loc-top">
+                    <div class="loc-left">
+                      <div class="loc-icon">
+                        <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+                          <path d="M10 2C7.2 2 5 4.2 5 7c0 4.5 5 11 5 11s5-6.5 5-11c0-2.8-2.2-5-5-5z"
+                            :fill="locSuccess ? 'var(--green-500)' : 'none'"
+                            :stroke="locSuccess ? 'var(--green-600)' : 'currentColor'"
+                            stroke-width="1.5"/>
+                          <circle cx="10" cy="7" r="2"
+                            :fill="locSuccess ? 'white' : 'currentColor'"/>
+                        </svg>
+                      </div>
+                      <div class="loc-text">
+                        <strong>{{ locSuccess ? 'Manzil tanlandi' : 'Xaritadan tanlash' }}</strong>
+                        <p>{{ locSuccess ? detectedAddr : 'Yandex xaritasida aniq manzilni belgilang' }}</p>
+                      </div>
+                    </div>
+                    <button type="button" class="loc-btn" :class="{ done: locSuccess }" @click="showMap = true">
+                      <svg viewBox="0 0 16 16" fill="none" width="14" height="14">
+                        <rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M5 13V7l3-3 3 3v6" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                        <path d="M1 8l4-4 3 3 3-3 4 4" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+                      </svg>
+                      {{ locSuccess ? 'O\'zgartirish' : 'Xarita ochish' }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- MapPicker modal -->
+                <MapPicker :show="showMap" @close="showMap = false" @confirm="onMapConfirm" />
+
+                <!-- Street address -->
+                <div class="addr-street">
+                  <svg class="street-ico" viewBox="0 0 16 16" fill="none" width="14" height="14">
+                    <path d="M8 1C5.2 1 3 3.2 3 6c0 4 5 9 5 9s5-5 5-9c0-2.8-2.2-5-5-5z" stroke="currentColor" stroke-width="1.5"/>
+                    <circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.4"/>
+                  </svg>
+                  <input
+                    v-model="f.address"
+                    type="text"
+                    placeholder="Ko'cha nomi, mahalla..."
+                    :class="{ err: v && !f.address }"
+                    class="street-input"
+                  />
+                </div>
+
+                <!-- Detail grid: dom / kvartira / podez / domofon -->
+                <div class="addr-detail-grid">
+                  <div class="detail-field">
+                    <label>
+                      <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
+                        <rect x="1" y="4" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M4 4V3a3 3 0 016 0v1" stroke="currentColor" stroke-width="1.4"/>
+                      </svg>
+                      Dom
+                    </label>
+                    <input v-model="f.dom" type="text" placeholder="12A" />
+                  </div>
+                  <div class="detail-field">
+                    <label>
+                      <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
+                        <rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M5 5h4M5 8h4M6 11h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                      </svg>
+                      Kvartira
+                    </label>
+                    <input v-model="f.kvartira" type="text" placeholder="42" />
+                  </div>
+                  <div class="detail-field">
+                    <label>
+                      <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
+                        <path d="M3 13V6l4-4 4 4v7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                        <rect x="5" y="9" width="4" height="4" rx=".5" stroke="currentColor" stroke-width="1.3"/>
+                      </svg>
+                      Podez
+                    </label>
+                    <input v-model="f.podez" type="text" placeholder="3" />
+                  </div>
+                  <div class="detail-field">
+                    <label>
+                      <svg viewBox="0 0 14 14" fill="none" width="12" height="12">
+                        <rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                        <circle cx="4.5" cy="7" r="1" fill="currentColor"/>
+                        <circle cx="7" cy="7" r="1" fill="currentColor"/>
+                        <circle cx="9.5" cy="7" r="1" fill="currentColor"/>
+                      </svg>
+                      Domofon
+                    </label>
+                    <input v-model="f.domofon" type="text" placeholder="1234#" />
+                  </div>
+                </div>
               </div>
               <div class="field">
                 <label>Shahar <span class="req">*</span></label>
@@ -294,21 +388,39 @@ import { ref, computed } from 'vue'
 import { useCartStore } from '../stores/cart'
 import { useAuthStore } from '../stores/auth'
 import { useRouter }    from 'vue-router'
+import MapPicker        from '../components/ui/MapPicker.vue'
 
 const cartStore = useCartStore()
 const authStore = useAuthStore()
 const router    = useRouter()
 
 const step = ref(1)
-const v    = ref(false)  // validation triggered
+const v    = ref(false)
 const pay  = ref('')
-const cardNum = ref('')
+const cardNum  = ref('')
 const orderNum = Math.floor(Math.random()*90000)+10000
 
 const f = ref({
   firstName:'', lastName:'', phone:'', email:'',
-  address:'', city:'', time:'', note:''
+  address:'', city:'', time:'', note:'',
+  dom:'', kvartira:'', podez:'', domofon:''
 })
+
+/* ── Map picker ── */
+const showMap      = ref(false)
+const locSuccess   = ref(false)
+const detectedAddr = ref('')
+
+function onMapConfirm({ address }) {
+  f.value.address = address
+  detectedAddr.value = address
+  locSuccess.value = true
+
+  /* Shaharni manzildan aniqlash */
+  const cityNames = ['Toshkent','Samarqand','Buxoro','Namangan','Andijon','Farg\'ona','Qo\'qon','Nukus']
+  const found = cityNames.find(c => address.toLowerCase().includes(c.toLowerCase()))
+  if (found) f.value.city = found
+}
 
 const stepLabels = ['Ma\'lumotlar', 'To\'lov', 'Tasdiqlash']
 
@@ -596,6 +708,85 @@ function finish() {
 }
 .edit-link:hover { color:var(--green-700); }
 
+/* ─── Address block ──────────────────────────────── */
+.addr-block { display:flex; flex-direction:column; gap:12px; }
+.addr-label { font-size:12px; font-weight:700; color:var(--text-2); text-transform:uppercase; letter-spacing:.5px; }
+
+/* Location card */
+.loc-card {
+  border:1.5px solid var(--border); border-radius:14px;
+  padding:14px 16px; background:var(--slate-50);
+  transition: border-color .25s, background .25s;
+}
+.loc-card.loc-success { border-color:var(--green-400); background:var(--green-50); }
+
+.loc-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.loc-left { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+.loc-text { min-width:0; }
+.loc-text strong { display:block; font-size:13px; font-weight:700; color:var(--text); }
+.loc-text p { font-size:12px; color:var(--text-3); margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.loc-card.loc-success .loc-text p { color:var(--green-600); }
+
+.loc-icon {
+  width:40px; height:40px; border-radius:12px; flex-shrink:0;
+  background:#fff; border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--text-2);
+  transition: border-color .2s, color .2s;
+}
+.loc-card.loc-success .loc-icon { color:var(--green-600); border-color:var(--green-300,#86efac); background:var(--green-50); }
+
+.loc-btn {
+  display:flex; align-items:center; gap:6px;
+  padding:9px 14px; border-radius:10px; flex-shrink:0;
+  background:linear-gradient(135deg,var(--green-500),var(--green-600));
+  color:#fff; font-size:12px; font-weight:700;
+  border:none; cursor:pointer;
+  transition: opacity .2s, transform .15s;
+  white-space:nowrap;
+}
+.loc-btn:hover:not(:disabled) { transform:translateY(-1px); }
+.loc-btn:disabled { opacity:.6; cursor:not-allowed; }
+.loc-btn.done { background:var(--green-100); color:var(--green-700); }
+.loc-btn.loading { background:var(--slate-300); }
+
+
+/* Street input */
+.addr-street {
+  position:relative; display:flex; align-items:center;
+}
+.street-ico {
+  position:absolute; left:13px; color:var(--text-3); pointer-events:none; flex-shrink:0;
+}
+.street-input {
+  width:100%; padding:12px 14px 12px 36px;
+  border-radius:10px; border:1.5px solid var(--border);
+  font-size:14px; font-family:inherit; color:var(--text);
+  outline:none; transition:border-color .2s, box-shadow .2s; background:#fff;
+}
+.street-input:focus { border-color:var(--green-400); box-shadow:0 0 0 4px rgba(74,222,128,.12); }
+.street-input.err   { border-color:var(--red-400); }
+
+/* Detail grid */
+.addr-detail-grid {
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+}
+.detail-field { display:flex; flex-direction:column; gap:5px; }
+.detail-field label {
+  display:flex; align-items:center; gap:5px;
+  font-size:11px; font-weight:700; color:var(--text-3);
+  text-transform:uppercase; letter-spacing:.4px;
+}
+.detail-field input {
+  padding:10px 12px; border-radius:10px;
+  border:1.5px solid var(--border); font-size:14px;
+  font-family:inherit; color:var(--text);
+  outline:none; transition:border-color .2s, box-shadow .2s; background:#fff;
+  text-align:center; font-weight:600;
+}
+.detail-field input:focus { border-color:var(--green-400); box-shadow:0 0 0 3px rgba(74,222,128,.1); }
+.detail-field input::placeholder { font-weight:400; color:var(--text-3); }
+
 /* Step transition */
 .step-fade-enter-active, .step-fade-leave-active { transition:all .28s var(--ease); }
 .step-fade-enter-from { opacity:0; transform:translateX(20px); }
@@ -617,11 +808,16 @@ function finish() {
   .card-head h2 { font-size:17px; }
   .pm-card { padding:12px; }
   .pm-icon { font-size:22px; }
+  .addr-detail-grid { grid-template-columns:1fr 1fr; gap:8px; }
+  .loc-left p { max-width:140px; }
 }
 @media (max-width:430px) {
   .next-btn { font-size:13px; padding:13px 16px; }
   .step-circle { width:28px; height:28px; font-size:12px; }
   .step-label  { font-size:11px; }
   .step-line   { width:40px; margin:0 8px; }
+  .addr-detail-grid { grid-template-columns:1fr 1fr; }
+  .loc-btn { padding:8px 10px; font-size:11px; }
+  .loc-icon { width:34px; height:34px; }
 }
 </style>
