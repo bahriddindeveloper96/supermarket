@@ -45,16 +45,31 @@
 
       <!-- Desktop Actions -->
       <div class="desk-actions">
-        <button class="icon-btn" title="Sevimlilar">
-          <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+        <!-- Wishlist -->
+        <router-link to="/wishlist" class="action-icon-btn" title="Sevimlilar">
+          <svg viewBox="0 0 20 20" fill="none" width="19" height="19">
             <path d="M10 17C10 17 2.5 12 2.5 7a4.5 4.5 0 019 0 4.5 4.5 0 019 0C20.5 12 10 17 10 17z"
               :fill="productStore.wishlist.length ? '#ef4444':'none'"
               :stroke="productStore.wishlist.length ? '#ef4444':'currentColor'"
               stroke-width="1.7" stroke-linejoin="round"/>
           </svg>
-          <span v-if="productStore.wishlist.length" class="icon-badge">{{ productStore.wishlist.length }}</span>
+          <transition name="badge-pop">
+            <span v-if="productStore.wishlist.length" class="action-badge red">{{ productStore.wishlist.length }}</span>
+          </transition>
+        </router-link>
+
+        <!-- Profile -->
+        <button class="action-icon-btn" title="Profil">
+          <svg viewBox="0 0 20 20" fill="none" width="19" height="19">
+            <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M3 18c0-3.5 3.1-6 7-6s7 2.5 7 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
         </button>
 
+        <!-- Divider -->
+        <div class="act-divider"/>
+
+        <!-- Cart -->
         <button class="cart-btn" @click="cartStore.isOpen = true">
           <svg viewBox="0 0 20 20" fill="none" width="17" height="17">
             <path d="M2.5 3.5h1.8l.9 1.8m0 0L7 12h9l2-6.7H5.2z" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -62,14 +77,9 @@
             <circle cx="14" cy="15.5" r="1.2" fill="white"/>
           </svg>
           <span>Savat</span>
-          <span v-if="cartStore.totalItems" class="cart-count">{{ cartStore.totalItems }}</span>
-        </button>
-
-        <button class="icon-btn" title="Profil">
-          <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
-            <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.7"/>
-            <path d="M3 18c0-3.5 3.1-6 7-6s7 2.5 7 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          </svg>
+          <transition name="badge-pop">
+            <span v-if="cartStore.totalItems" class="cart-count">{{ cartStore.totalItems }}</span>
+          </transition>
         </button>
       </div>
 
@@ -172,7 +182,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 .header-inner {
   display: flex; align-items: center;
-  gap: 14px; height: 66px;
+  gap: 12px; height: 66px;
 }
 
 /* ═══ LOGO ════════════════════════════════════════════ */
@@ -213,7 +223,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 .s-clear:hover { background: var(--red-400); color: #fff; }
 
 /* ═══ DESKTOP NAV ═════════════════════════════════════ */
-.desk-nav { display: flex; gap: 2px; flex-shrink: 0; }
+.desk-nav { display: flex; gap: 2px; flex-shrink: 0; margin-left: 4px; }
 .nav-link {
   padding: 7px 13px; border-radius: 10px;
   font-size: 14px; font-weight: 500; color: var(--text-2);
@@ -223,34 +233,57 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 .nav-link.router-link-active { background: var(--green-100); color: var(--green-700); font-weight: 600; }
 
 /* ═══ DESKTOP ACTIONS ═════════════════════════════════ */
-.desk-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-
-.icon-btn {
-  position: relative; width: 40px; height: 40px; border-radius: 11px;
-  background: var(--slate-100);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--text-2); transition: background .18s, transform .2s var(--spring);
+.desk-actions {
+  display: flex; align-items: center; gap: 4px;
+  flex-shrink: 0; margin-left: auto;
 }
-.icon-btn:hover { background: var(--slate-200); transform: translateY(-1px); }
-.icon-badge {
-  position: absolute; top: -5px; right: -5px;
-  min-width: 17px; height: 17px; border-radius: 9px;
-  background: var(--red-500); color: #fff; font-size: 9px; font-weight: 700;
+
+.action-icon-btn {
+  position: relative;
+  width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+  background: transparent;
   display: flex; align-items: center; justify-content: center;
-  border: 2px solid #fff; padding: 0 3px;
+  color: var(--text-2);
+  transition: background .18s, color .18s, transform .2s var(--spring);
+  text-decoration: none; border: none; cursor: pointer;
+}
+.action-icon-btn:hover {
+  background: var(--slate-100);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+.action-icon-btn:hover svg path[stroke="#ef4444"],
+.action-icon-btn:hover svg path[fill="#ef4444"] { stroke: #dc2626; }
+
+.action-badge {
+  position: absolute; top: 4px; right: 4px;
+  min-width: 16px; height: 16px; border-radius: 8px;
+  font-size: 9px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff; padding: 0 3px; line-height: 1;
+}
+.action-badge.red { background: #ef4444; color: #fff; }
+
+.act-divider {
+  width: 1px; height: 24px;
+  background: var(--border);
+  margin: 0 6px; flex-shrink: 0;
 }
 
 .cart-btn {
-  display: flex; align-items: center; gap: 7px;
-  padding: 0 14px 0 10px; height: 40px; border-radius: 11px;
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px 0 12px; height: 42px; border-radius: 12px; flex-shrink: 0;
   background: linear-gradient(135deg, var(--green-500), var(--green-600));
-  color: #fff; font-size: 14px; font-weight: 600;
+  color: #fff; font-size: 14px; font-weight: 700;
   transition: transform .2s var(--spring), box-shadow .2s;
+  box-shadow: 0 2px 10px rgba(34,197,94,.25);
 }
-.cart-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-green); }
+.cart-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(34,197,94,.4); }
 .cart-count {
-  min-width: 20px; height: 20px; border-radius: 10px;
-  background: rgba(255,255,255,.25); font-size: 11px; font-weight: 700;
+  min-width: 22px; height: 22px; border-radius: 11px;
+  background: rgba(255,255,255,.2);
+  border: 1.5px solid rgba(255,255,255,.3);
+  font-size: 11px; font-weight: 800;
   display: flex; align-items: center; justify-content: center; padding: 0 5px;
 }
 

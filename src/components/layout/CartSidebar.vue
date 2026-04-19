@@ -41,9 +41,9 @@
                 </svg>
               </button>
               <div class="qty">
-                <button @click="cartStore.updateQty(item.id, item.qty-1)">−</button>
-                <span>{{ item.qty }}</span>
-                <button @click="cartStore.updateQty(item.id, item.qty+1)">+</button>
+                <button @click="cartStore.updateQty(item.id, item.qty - (item.step || 1))">−</button>
+                <span>{{ fmtQty(item) }}</span>
+                <button @click="cartStore.updateQty(item.id, item.qty + (item.step || 1))">+</button>
               </div>
               <p class="item-subtotal">{{ fmt(item.price * item.qty) }}</p>
             </div>
@@ -124,6 +124,12 @@ const finalPrice = computed(() =>
 )
 
 function fmt(n) { return n.toLocaleString('uz-UZ') }
+
+function fmtQty(item) {
+  const u = item.unit || 'dona'
+  const q = (u === 'kg' || u === 'gr') ? item.qty.toFixed(1) : item.qty
+  return `${q} ${u}`
+}
 
 function applyPromo() {
   if (promo.value.toUpperCase() === 'FRESHMART30') {

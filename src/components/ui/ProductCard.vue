@@ -2,30 +2,38 @@
   <article class="card" @mouseenter="hover=true" @mouseleave="hover=false">
 
     <!-- Image area -->
-    <router-link :to="'/product/' + product.id" class="card-media-link">
-    <div class="card-media">
-      <img :src="product.images ? product.images[0] : product.image" :alt="product.name" loading="lazy" />
+    <div class="card-media-wrap">
+      <router-link :to="'/product/' + product.id" class="card-media-link">
+        <div class="card-media">
+          <img :src="product.images ? product.images[0] : product.image" :alt="product.name" loading="lazy" />
 
-      <!-- Overlay actions -->
-      <div class="media-overlay" :class="{ show: hover }">
-        <button class="ov-btn" @click.stop="addToCart" title="Savatga qo'shish">
-          <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
-            <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          Savatga qo'shish
-        </button>
-      </div>
+          <!-- Overlay actions -->
+          <!-- <div class="media-overlay" :class="{ show: hover }">
+            <button class="ov-btn" @click.stop="addToCart" title="Savatga qo'shish">
+              <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
+                <path d="M5 10h10M10 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Savatga qo'shish
+            </button>
+          </div> -->
 
-      <!-- Badge -->
-      <div v-if="product.badge" class="badge" :class="'badge-'+badge">
-        {{ product.badge }}
-      </div>
+          <!-- Badge -->
+          <div v-if="product.badge" class="badge" :class="'badge-'+badge">
+            {{ product.badge }}
+          </div>
 
-      <!-- Wishlist -->
+          <!-- Discount pill -->
+          <div v-if="product.oldPrice" class="disc-pill">
+            -{{ discPct }}%
+          </div>
+        </div>
+      </router-link>
+
+      <!-- Wishlist — router-link TASHQARISIDA -->
       <button
         class="wish"
         :class="{ active: productStore.isWishlisted(product.id) }"
-        @click.stop="productStore.toggleWishlist(product.id)"
+        @click="productStore.toggleWishlist(product.id)"
         title="Sevimlilarga qo'shish"
       >
         <svg viewBox="0 0 20 20" width="16" height="16" fill="none">
@@ -35,13 +43,7 @@
                 stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
       </button>
-
-      <!-- Discount pill -->
-      <div v-if="product.oldPrice" class="disc-pill">
-        -{{ discPct }}%
-      </div>
     </div>
-    </router-link>
 
     <!-- Body -->
     <div class="card-body">
@@ -64,27 +66,35 @@
         <div class="price-group">
           <span class="price">{{ fmt(product.price) }}</span>
           <span class="currency">so'm</span>
+          <span class="unit-label">/ {{ product.unit || 'dona' }}</span>
         </div>
         <span v-if="product.oldPrice" class="old-price">{{ fmt(product.oldPrice) }}</span>
       </div>
 
-      <!-- Add button -->
-      <button class="add-btn" :class="{ added }" @click="addToCart">
-        <transition name="fade" mode="out-in">
-          <span v-if="!added" key="a" class="btn-inner">
+      <!-- Add button / Qty stepper -->
+      <transition name="fade" mode="out-in">
+        <div v-if="cartItem" key="stepper" class="qty-stepper">
+          <button class="qs-btn" @click.stop="decrement">
+            <svg viewBox="0 0 12 12" fill="none" width="11" height="11">
+              <path d="M2 6h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <span class="qs-val">{{ fmtQty(cartItem) }}</span>
+          <button class="qs-btn qs-plus" @click.stop="increment">
+            <svg viewBox="0 0 12 12" fill="none" width="11" height="11">
+              <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <button v-else key="addbtn" class="add-btn" @click="addToCart">
+          <span class="btn-inner">
             <svg viewBox="0 0 18 18" fill="none" width="15" height="15">
               <path d="M9 4v10M4 9h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
             Savatga
           </span>
-          <span v-else key="b" class="btn-inner">
-            <svg viewBox="0 0 18 18" fill="none" width="15" height="15">
-              <path d="M4 9l4 4 6-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Qo'shildi!
-          </span>
-        </transition>
-      </button>
+        </button>
+      </transition>
     </div>
   </article>
 </template>
@@ -98,7 +108,8 @@ const props = defineProps({ product: Object })
 const cartStore    = useCartStore()
 const productStore = useProductStore()
 const hover = ref(false)
-const added = ref(false)
+
+const cartItem = computed(() => cartStore.items.find(i => i.id === props.product.id) || null)
 
 const badgeMap = { 'Yangi':'new', 'Chegirma':'sale', 'Top':'top', 'Premium':'premium' }
 const badge    = computed(() => badgeMap[props.product.badge] || 'new')
@@ -110,15 +121,28 @@ const discPct  = computed(() =>
 
 function fmt(n) { return n.toLocaleString('uz-UZ') }
 
+function fmtQty(item) {
+  const u = item.unit || 'dona'
+  const q = (u === 'kg' || u === 'gr') ? item.qty.toFixed(1) : item.qty
+  return `${q} ${u}`
+}
+
 function addToCart() {
   cartStore.addItem({ ...props.product, image: props.product.images ? props.product.images[0] : props.product.image })
-  added.value = true
-  setTimeout(() => added.value = false, 1800)
+}
+
+function increment() {
+  cartStore.updateQty(props.product.id, cartItem.value.qty + (props.product.step || 1))
+}
+
+function decrement() {
+  cartStore.updateQty(props.product.id, cartItem.value.qty - (props.product.step || 1))
 }
 </script>
 
 <style scoped>
-/* ─── Media link wrapper ────────────────────────────── */
+/* ─── Media wrappers ────────────────────────────────── */
+.card-media-wrap { position:relative; }
 .card-media-link { display:block; }
 
 /* ─── Card shell ────────────────────────────────────── */
@@ -225,7 +249,28 @@ a:hover .name { color: var(--green-700); }
 .price-group { display:flex; align-items:baseline; gap:4px; }
 .price    { font-size:18px; font-weight:800; color:var(--green-700); }
 .currency { font-size:11px; color:var(--text-3); }
+.unit-label { font-size:11px; color:var(--text-3); }
 .old-price { font-size:12px; color:var(--text-3); text-decoration:line-through; }
+
+/* Qty stepper */
+.qty-stepper {
+  display:flex; align-items:center; justify-content:space-between;
+  width:100%; border-radius:10px;
+  background:var(--green-500);
+  padding:4px;
+}
+.qs-btn {
+  width:32px; height:32px; border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.2); color:#fff;
+  transition: background .15s;
+  flex-shrink:0;
+}
+.qs-btn:hover { background:rgba(255,255,255,.35); }
+.qs-val {
+  font-size:13px; font-weight:700; color:#fff;
+  min-width:52px; text-align:center;
+}
 
 /* Add button */
 .add-btn {
@@ -247,4 +292,22 @@ a:hover .name { color: var(--green-700); }
   border-color:var(--green-600);
 }
 .btn-inner { display:flex; align-items:center; justify-content:center; gap:6px; }
+
+@media (max-width:430px) {
+  .card-body { padding:10px 12px 12px; gap:6px; }
+  .name { font-size:13px; }
+  .price { font-size:15px; }
+  .add-btn { padding:9px 10px; font-size:12px; }
+  .r-val, .r-cnt { font-size:11px; }
+  .qs-btn { width:28px; height:28px; }
+  .qs-val { font-size:12px; }
+}
+@media (max-width:375px) {
+  .card-body { padding:8px 10px 10px; }
+  .name { font-size:12px; }
+  .price { font-size:13px; }
+  .add-btn { padding:8px 6px; font-size:11px; }
+  .old-price { display:none; }
+  .qs-val { font-size:11px; min-width:40px; }
+}
 </style>

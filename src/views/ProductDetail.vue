@@ -154,7 +154,7 @@
           </div>
         </div>
 
-        <!-- Actions -->
+        <!-- Actions (desktop) -->
         <div class="action-row">
           <button class="add-cart-btn" :class="{ added }" @click="addToCart" :disabled="!product.inStock">
             <transition name="fade" mode="out-in">
@@ -195,6 +195,44 @@
         <button v-if="cartStore.totalItems" class="view-cart-link" @click="cartStore.isOpen = true">
           Savatni ko'rish ({{ cartStore.totalItems }} ta mahsulot) →
         </button>
+
+        <!-- Mobile sticky bottom bar (shown only on mobile via CSS) -->
+        <div class="mob-sticky-bar">
+          <div class="msb-price">
+            <span class="msb-val">{{ fmt(totalPrice) }}</span>
+            <span class="msb-cur">so'm</span>
+          </div>
+          <button
+            class="msb-wish"
+            :class="{ active: productStore.isWishlisted(product.id) }"
+            @click="productStore.toggleWishlist(product.id)"
+          >
+            <svg viewBox="0 0 20 20" fill="none" width="20" height="20">
+              <path d="M10 17C10 17 2.5 12 2.5 7a4.5 4.5 0 019 0 4.5 4.5 0 019 0C20.5 12 10 17 10 17z"
+                :fill="productStore.isWishlisted(product.id) ? '#ef4444' : 'none'"
+                :stroke="productStore.isWishlisted(product.id) ? '#ef4444' : 'currentColor'"
+                stroke-width="1.7" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <button class="msb-cart" :class="{ added }" @click="addToCart" :disabled="!product.inStock">
+            <transition name="fade" mode="out-in">
+              <span v-if="!added" key="a" class="btn-content">
+                <svg viewBox="0 0 20 20" fill="none" width="17" height="17">
+                  <path d="M2.5 3.5h1.8l.9 1.8m0 0L7 12h9l2-6.7H5.2z" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="8" cy="15.5" r="1.2" fill="white"/>
+                  <circle cx="14" cy="15.5" r="1.2" fill="white"/>
+                </svg>
+                Savatga qo'shish
+              </span>
+              <span v-else key="b" class="btn-content">
+                <svg viewBox="0 0 18 18" fill="none" width="17" height="17">
+                  <path d="M3 9l5 5 8-8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Qo'shildi!
+              </span>
+            </transition>
+          </button>
+        </div>
 
         <div class="divider"/>
 
@@ -341,6 +379,7 @@ function nextImg() {
 
 <style scoped>
 .detail-page { padding-top: 70px; min-height: 100vh; }
+@media (max-width: 768px) { .detail-page { padding-top: 58px; } }
 
 /* ── Breadcrumb ──────────────────────────────────────── */
 .breadcrumb-bar {
@@ -623,20 +662,226 @@ function nextImg() {
   background: var(--green-500); color: #fff; font-weight: 700;
 }
 
-/* ── Responsive ─────────────────────────────────────── */
+/* ── Mobile sticky bar (hidden on desktop) ──────────── */
+.mob-sticky-bar { display: none; }
+
+/* ── Responsive: Tablet ─────────────────────────────── */
 @media (max-width: 960px) {
-  .detail-layout { grid-template-columns: 1fr; gap: 32px; padding: 28px 28px 60px; }
+  .detail-layout {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 32px 0 120px;
+  }
   .gallery { position: static; }
   .related-grid { grid-template-columns: repeat(2, 1fr); }
+  .related-section { padding: 40px 0 52px; }
 }
-@media (max-width: 600px) {
-  .product-title { font-size: 24px; }
-  .price-val { font-size: 28px; }
-  .action-row { flex-direction: column; }
-  .wish-btn { width: 100%; height: 50px; }
-  .thumbs .thumb { width: 58px; height: 58px; }
-  .qty-chips { gap: 4px; }
-  .qty-chip { padding: 7px 10px; font-size: 12px; }
-  .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+/* ── Responsive: Mobile ─────────────────────────────── */
+@media (max-width: 768px) {
+  .detail-page { padding-top: 58px; }
+
+  /* ─ Breadcrumb ─ */
+  .breadcrumb-bar { padding: 12px 0; background: var(--slate-50); }
+  .breadcrumb { font-size: 12px; gap: 6px; flex-wrap: nowrap; overflow: hidden; }
+  .breadcrumb span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* ─ Layout: gallery goes full-bleed ─ */
+  .detail-layout { padding: 0 0 140px; }
+  .gallery {
+    margin-left: -20px;
+    margin-right: -20px;
+    width: calc(100% + 40px);
+  }
+  .main-img-wrap {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    aspect-ratio: 4/3;
+  }
+  .thumbs {
+    padding: 12px 20px 4px;
+    gap: 8px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .thumbs::-webkit-scrollbar { display: none; }
+  .thumb { width: 60px; height: 60px; flex-shrink: 0; }
+
+  /* ─ Info section ─ */
+  .info-col {
+    padding: 24px 20px 0;
+  }
+
+  .cat-tag { margin-bottom: 8px; }
+  .cat-tag span { font-size: 12px; padding: 4px 12px; }
+
+  .product-title {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    letter-spacing: -.3px;
+  }
+
+  .rating-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .star { font-size: 15px; }
+  .rating-num  { font-size: 13px; }
+  .reviews-num { font-size: 13px; }
+
+  .price-block { margin-bottom: 16px; }
+  .price-val { font-size: 30px; font-weight: 900; }
+  .price-cur { font-size: 15px; }
+  .old-price { font-size: 14px; }
+  .unit-note { font-size: 12px; }
+
+  .divider { margin: 18px 0; }
+
+  /* ─ Qty selector ─ */
+  .qty-section { margin-bottom: 0; }
+  .qty-label { font-size: 11px; margin-bottom: 10px; }
+  .qty-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .qty-control { border-radius: 14px; }
+  .qty-btn { width: 48px; height: 52px; }
+  .qty-display { padding: 0 20px; min-width: 80px; }
+  .qty-val  { font-size: 20px; }
+  .qty-unit { font-size: 12px; }
+  .qty-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .qty-chip {
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  /* ─ Desktop actions hidden, sticky bar shown ─ */
+  .action-row     { display: none; }
+  .view-cart-link { display: none; }
+
+  .mob-sticky-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: fixed;
+    bottom: 68px;
+    left: 0; right: 0;
+    z-index: 150;
+    background: rgba(255,255,255,.98);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid var(--border);
+    padding: 10px 16px max(10px, env(safe-area-inset-bottom));
+    box-shadow: 0 -6px 28px rgba(0,0,0,.1);
+  }
+  .msb-price {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    min-width: 90px;
+  }
+  .msb-val {
+    font-size: 18px; font-weight: 900;
+    color: var(--green-700); letter-spacing: -.3px;
+    line-height: 1.1;
+  }
+  .msb-cur { font-size: 11px; color: var(--text-3); }
+
+  .msb-wish {
+    width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0;
+    background: var(--slate-100);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-3);
+    transition: all .2s var(--spring);
+  }
+  .msb-wish:active  { transform: scale(.92); }
+  .msb-wish.active  { border-color: #ef4444; background: #fef2f2; }
+
+  .msb-cart {
+    flex: 1; height: 50px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--green-500), var(--green-600));
+    color: #fff; font-size: 14px; font-weight: 700;
+    transition: opacity .2s, transform .2s var(--spring);
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(34,197,94,.3);
+  }
+  .msb-cart:active  { transform: scale(.97); }
+  .msb-cart.added   { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .msb-cart:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* ─ Description & details ─ */
+  .desc-section { margin-bottom: 24px; }
+  .desc-section h3, .details-table h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .desc-section p {
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text-2);
+  }
+  .dt-row { padding: 11px 14px; font-size: 13px; }
+  .details-table { margin-bottom: 24px; }
+
+  /* ─ Delivery cards ─ */
+  .delivery-info { flex-direction: column; gap: 10px; }
+  .di-item       { min-width: unset; padding: 14px 16px; }
+  .di-icon       { font-size: 22px; }
+  .di-item strong { font-size: 13px; }
+  .di-item p     { font-size: 12px; }
+
+  /* ─ Related ─ */
+  .related-section { padding: 32px 0 48px; margin-top: 24px; }
+  .related-title   { font-size: 20px; margin-bottom: 18px; }
+  .related-grid    { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+}
+
+/* ── Small phones (430px) ────────────────────────────── */
+@media (max-width: 430px) {
+  .gallery {
+    margin-left: -14px;
+    margin-right: -14px;
+    width: calc(100% + 28px);
+  }
+  .info-col { padding: 20px 16px 0; }
+  .thumbs { padding: 10px 14px 4px; gap: 7px; }
+  .thumb  { width: 54px; height: 54px; }
+
+  .product-title { font-size: 20px; }
+  .price-val     { font-size: 26px; }
+
+  .qty-btn    { width: 44px; height: 50px; }
+  .qty-val    { font-size: 18px; }
+  .qty-chips  { gap: 6px; }
+  .qty-chip   { padding: 8px 13px; font-size: 12px; }
+
+  .msb-val  { font-size: 17px; }
+  .msb-cart { font-size: 13px; }
+  .msb-wish { width: 46px; height: 46px; }
+  .msb-cart { height: 46px; }
+}
+
+/* ── Very small phones (375px) ───────────────────────── */
+@media (max-width: 375px) {
+  .product-title { font-size: 18px; }
+  .price-val     { font-size: 24px; }
+  .qty-chips     { gap: 5px; }
+  .qty-chip      { padding: 7px 11px; font-size: 11px; }
+  .msb-price     { min-width: 80px; }
+  .msb-val       { font-size: 16px; }
 }
 </style>

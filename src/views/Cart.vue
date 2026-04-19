@@ -49,17 +49,17 @@
             <div class="row-info">
               <p class="row-badge" v-if="item.badge">{{ item.badge }}</p>
               <h3>{{ item.name }}</h3>
-              <p class="row-unit">{{ fmt(item.price) }} so'm / birlik</p>
+              <p class="row-unit">{{ fmt(item.price) }} so'm / {{ item.unit || 'dona' }}</p>
             </div>
 
             <div class="row-qty">
-              <button class="qty-btn" @click="cartStore.updateQty(item.id, item.qty-1)">
+              <button class="qty-btn" @click="cartStore.updateQty(item.id, item.qty - (item.step || 1))">
                 <svg viewBox="0 0 12 12" fill="none" width="10" height="10">
                   <path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                 </svg>
               </button>
-              <span>{{ item.qty }}</span>
-              <button class="qty-btn" @click="cartStore.updateQty(item.id, item.qty+1)">
+              <span>{{ fmtQty(item) }}</span>
+              <button class="qty-btn" @click="cartStore.updateQty(item.id, item.qty + (item.step || 1))">
                 <svg viewBox="0 0 12 12" fill="none" width="10" height="10">
                   <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
                 </svg>
@@ -196,6 +196,12 @@ const finalTotal = computed(() =>
 
 function fmt(n) { return n.toLocaleString('uz-UZ') }
 
+function fmtQty(item) {
+  const u = item.unit || 'dona'
+  const q = (u === 'kg' || u === 'gr') ? item.qty.toFixed(1) : item.qty
+  return `${q} ${u}`
+}
+
 function applyPromo() {
   promoError.value = false
   const code = promoInput.value.trim().toUpperCase()
@@ -214,6 +220,7 @@ const trusts = ['Xavfsiz to\'lov', 'Bepul yetkazish', '30 kun qaytarish kafolati
 
 <style scoped>
 .page { padding-top:70px; }
+@media (max-width:768px) { .page { padding-top:58px; } }
 
 /* ─── Banner ─────────────────────────────────────── */
 .page-banner {
@@ -384,12 +391,22 @@ const trusts = ['Xavfsiz to\'lov', 'Bepul yetkazish', '30 kun qaytarish kafolati
 
 /* ─── Responsive ─────────────────────────────────── */
 @media (max-width:900px) {
-  .cart-layout { grid-template-columns:1fr; }
+  .cart-layout { grid-template-columns:1fr; padding:24px 0 60px; }
   .summary-card { position:static; }
 }
 @media (max-width:600px) {
-  .cart-row { flex-wrap:wrap; }
-  .row-total { order:3; width:100%; text-align:left; }
-  .row-del   { order:4; }
+  .page-banner { padding:32px 0 24px; }
+  .banner-inner h1 { font-size:24px; }
+  .cart-row { flex-wrap:wrap; gap:10px; }
+  .row-img  { width:60px; height:60px; }
+  .row-total { order:3; width:auto; text-align:left; }
+  .row-total strong { font-size:15px; }
+  .row-del   { order:4; margin-left:auto; }
+  .items-head h2 { font-size:16px; }
+}
+@media (max-width:430px) {
+  .row-info h3 { font-size:13px; }
+  .sum-total strong { font-size:18px; }
+  .checkout-btn { font-size:14px; padding:14px; }
 }
 </style>

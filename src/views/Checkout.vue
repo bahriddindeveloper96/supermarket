@@ -260,7 +260,7 @@
               <div class="oi-img"><img :src="item.image" :alt="item.name" /></div>
               <div class="oi-body">
                 <p>{{ item.name }}</p>
-                <small>{{ item.qty }} × {{ fmt(item.price) }} so'm</small>
+                <small>{{ fmtQty(item) }} × {{ fmt(item.price) }} so'm</small>
               </div>
               <span class="oi-total">{{ fmt(item.price*item.qty) }}</span>
             </div>
@@ -324,6 +324,12 @@ const payName = computed(() => methods.find(m=>m.id===pay.value)?.name || '')
 
 function fmt(n) { return n.toLocaleString('uz-UZ') }
 
+function fmtQty(item) {
+  const u = item.unit || 'dona'
+  const q = (u === 'kg' || u === 'gr') ? item.qty.toFixed(1) : item.qty
+  return `${q} ${u}`
+}
+
 function nextStep1() {
   v.value = true
   if (!f.value.firstName || !f.value.lastName || !f.value.phone || !f.value.address || !f.value.city) return
@@ -343,6 +349,7 @@ function finish() {
 
 <style scoped>
 .page { padding-top:70px; }
+@media (max-width:768px) { .page { padding-top:58px; } }
 
 /* ─── Banner ─────────────────────────────────────── */
 .page-banner {
@@ -585,13 +592,25 @@ function finish() {
 
 /* ─── Responsive ─────────────────────────────────── */
 @media (max-width:900px) {
-  .checkout-layout { grid-template-columns:1fr; }
+  .checkout-layout { grid-template-columns:1fr; padding:24px 0 60px; }
   .order-card { position:static; }
   .steps { display:none; }
 }
 @media (max-width:600px) {
-  .form-grid { grid-template-columns:1fr; }
+  .page-banner { padding:28px 0; }
+  .banner-inner h1 { font-size:22px; }
+  .form-grid { grid-template-columns:1fr; gap:14px; }
   .success-actions { flex-direction:column; }
-  .form-card { padding:20px; }
+  .form-card { padding:18px; }
+  .card-head { gap:10px; margin-bottom:20px; }
+  .card-head h2 { font-size:17px; }
+  .pm-card { padding:12px; }
+  .pm-icon { font-size:22px; }
+}
+@media (max-width:430px) {
+  .next-btn { font-size:13px; padding:13px 16px; }
+  .step-circle { width:28px; height:28px; font-size:12px; }
+  .step-label  { font-size:11px; }
+  .step-line   { width:40px; margin:0 8px; }
 }
 </style>

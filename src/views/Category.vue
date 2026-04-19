@@ -162,7 +162,7 @@
           <TransitionGroup name="plist">
             <div class="list-row" v-for="p in productStore.filteredProducts" :key="p.id">
               <div class="lr-img">
-                <img :src="p.image" :alt="p.name" />
+                <img :src="p.images ? p.images[0] : p.image" :alt="p.name" />
                 <span v-if="p.badge" class="lr-badge">{{ p.badge }}</span>
               </div>
               <div class="lr-info">
@@ -238,6 +238,7 @@ function add(p)  { cartStore.addItem(p) }
 
 <style scoped>
 .page { padding-top:70px; }
+@media (max-width:768px) { .page { padding-top:58px; } }
 
 /* ─── Banner ─────────────────────────────────────── */
 .page-banner {
@@ -435,12 +436,23 @@ function add(p)  { cartStore.addItem(p) }
 @media (max-width:1100px) { .grid-view { grid-template-columns:repeat(2,1fr); } }
 @media (max-width:880px) {
   .page-body { grid-template-columns:1fr; }
-  .sidebar   { position:static; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .sidebar   { position:static; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .banner-search { display:none; }
+  .page-body { padding-top:24px; padding-bottom:60px; }
 }
 @media (max-width:600px) {
+  .page-banner { padding:36px 0 28px; }
+  .banner-inner h1 { font-size:24px; }
   .grid-view { grid-template-columns:repeat(2,1fr); gap:10px; }
-  .sidebar   { grid-template-columns:1fr; }
+  .sidebar   { grid-template-columns:1fr 1fr; }
   .list-row  { flex-wrap:wrap; }
+  .lr-img    { width:72px; height:72px; }
+  .lr-info p { display:none; }
+}
+@media (max-width:430px) {
+  .grid-view { grid-template-columns:repeat(2,1fr); gap:8px; }
+  .sidebar { grid-template-columns:1fr; }
+  .side-card { padding:14px; }
+  .cat-item, .sort-item { padding:7px 10px; font-size:12px; }
 }
 </style>

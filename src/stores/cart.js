@@ -10,10 +10,12 @@ export const useCartStore = defineStore('cart', () => {
 
   function addItem(product) {
     const existing = items.value.find(i => i.id === product.id)
+    const step = product.step || 1
+    const minQty = product.minQty || 1
     if (existing) {
-      existing.qty++
+      existing.qty = Math.round((existing.qty + step) * 100) / 100
     } else {
-      items.value.push({ ...product, qty: 1 })
+      items.value.push({ ...product, qty: minQty })
     }
   }
 
@@ -22,12 +24,15 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   function updateQty(id, qty) {
-    if (qty <= 0) {
+    const item = items.value.find(i => i.id === id)
+    if (!item) return
+    const minQty = item.minQty || 1
+    const rounded = Math.round(qty * 100) / 100
+    if (rounded < minQty) {
       removeItem(id)
       return
     }
-    const item = items.value.find(i => i.id === id)
-    if (item) item.qty = qty
+    item.qty = rounded
   }
 
   function clearCart() {

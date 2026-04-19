@@ -178,8 +178,19 @@ const pays = ['💳 Visa','💳 Mastercard','📱 Payme','⚡ Click','🏦 Uzcar
 
 /* Responsive */
 @media (max-width:1024px) { .footer-top { grid-template-columns:1fr 1fr; gap:32px; } }
+@media (max-width:768px) {
+  .footer { margin-bottom: 72px; }
+}
 @media (max-width:600px) {
-  .footer-top { grid-template-columns:1fr; gap:28px; padding:40px 0 28px; }
-  .footer-bottom { flex-direction:column; gap:14px; text-align:center; }
+  .footer-top { grid-template-columns:1fr; gap:24px; padding:32px 0 24px; }
+  .footer-bottom { flex-direction:column; gap:12px; text-align:center; padding:16px 0; }
+  .f-logo-name { font-size:16px; }
+  .brand-desc { font-size:12px; }
+  .pay-methods { justify-content:center; }
+}
+@media (max-width:430px) {
+  .footer-top { padding:28px 0 20px; }
+  .links-col ul li a { font-size:12px; }
+  .c-val { font-size:12px; }
 }
 </style>
