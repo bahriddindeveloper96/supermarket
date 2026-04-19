@@ -292,9 +292,11 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useCartStore } from '../stores/cart'
+import { useAuthStore } from '../stores/auth'
 import { useRouter }    from 'vue-router'
 
 const cartStore = useCartStore()
+const authStore = useAuthStore()
 const router    = useRouter()
 
 const step = ref(1)
@@ -342,8 +344,17 @@ function fmtCard() {
 }
 
 function finish() {
+  authStore.addOrder({
+    id: orderNum,
+    date: new Date().toLocaleDateString('uz-UZ'),
+    items: cartStore.items.map(i => ({ ...i })),
+    total: cartStore.totalPrice,
+    status: 'processing',
+    city: f.value.city,
+    payment: payName.value,
+  })
   cartStore.clearCart()
-  router.push('/')
+  router.push('/profile')
 }
 </script>
 

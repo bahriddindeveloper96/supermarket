@@ -59,12 +59,17 @@
         </router-link>
 
         <!-- Profile -->
-        <button class="action-icon-btn" title="Profil">
+        <router-link to="/profile" class="action-icon-btn" title="Profil">
           <svg viewBox="0 0 20 20" fill="none" width="19" height="19">
-            <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.7"/>
-            <path d="M3 18c0-3.5 3.1-6 7-6s7 2.5 7 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <circle cx="10" cy="7" r="3.5"
+              :fill="authStore.isLoggedIn ? 'rgba(34,197,94,.15)' : 'none'"
+              :stroke="authStore.isLoggedIn ? 'var(--green-600)' : 'currentColor'"
+              stroke-width="1.7"/>
+            <path d="M3 18c0-3.5 3.1-6 7-6s7 2.5 7 6"
+              :stroke="authStore.isLoggedIn ? 'var(--green-600)' : 'currentColor'"
+              stroke-width="1.7" stroke-linecap="round"/>
           </svg>
-        </button>
+        </router-link>
 
         <!-- Divider -->
         <div class="act-divider"/>
@@ -145,9 +150,11 @@ import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore }    from '../../stores/cart'
 import { useProductStore } from '../../stores/products'
+import { useAuthStore }    from '../../stores/auth'
 
 const cartStore    = useCartStore()
 const productStore = useProductStore()
+const authStore    = useAuthStore()
 const router       = useRouter()
 
 const scrolled    = ref(false)

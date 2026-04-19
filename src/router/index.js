@@ -5,6 +5,7 @@ import Cart          from '../views/Cart.vue'
 import Checkout      from '../views/Checkout.vue'
 import ProductDetail from '../views/ProductDetail.vue'
 import Wishlist      from '../views/Wishlist.vue'
+import Profile       from '../views/Profile.vue'
 import NotFound      from '../views/NotFound.vue'
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
   { path: '/cart',          component: Cart },
   { path: '/checkout',      component: Checkout },
   { path: '/wishlist',      component: Wishlist },
+  { path: '/profile',       component: Profile },
   { path: '/:pathMatch(.*)*', component: NotFound },
 ]
 
